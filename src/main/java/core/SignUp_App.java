@@ -5,6 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
@@ -38,7 +40,13 @@ public class SignUp_App {
 		String test_case_id_18 = "TC-001.18";
 		String test_case_id_19 = "TC-001.19";
 		String test_case_id_20 = "TC-001.20";
-
+		String test_case_id_21 = "TC-001.21";
+		String test_case_id_22 = "TC-001.22";
+		String test_case_id_23 = "TC-001.23";
+		String test_case_id_24 = "TC-001.24";
+		String test_case_id_25 = "TC-001.25";
+		String test_case_id_26 = "TC-001.26";
+		
 		String url = "http://learn2test.net/qa/apps/sign_up/v1/";
 
 		String title_sign_up_expected = "Welcome to Sign Up v1";
@@ -53,6 +61,11 @@ public class SignUp_App {
 		String error_lname_empty_expected = "Please enter Last Name";
 		String error_email_empty_expected = "Please enter Email Address";
 		String error_phone_empty_expected = "Please enter Phone Number";
+		String invalid_fname_expected = "Invalid First Name: [a-zA-Z,.'-]{3,30}";
+		String invalid_lname_expected = "Invalid Last Name: [a-zA-Z,.'-]{3,30}";
+		String invalid_email_expected = "Invalid Email Address: xx[min2]@x[min1].xx[2-6]";
+		String invalid_phone_expected = "Invalid Phone Number: should be 10 digits";
+		
 		
 		String copyright_expected = "© 2015 learn2test.net";
 		String os_browser_expected = "OS X 10.10 Yosemite";
@@ -533,8 +546,164 @@ public class SignUp_App {
 			System.out.println("===============================================================================");
 		}
 		
-			
+	// TC-001.21 Invalid First Name verification
 		
+		driver.findElement(By.id("id_fname")).clear();
+		driver.findElement(By.id("id_fname")).sendKeys("Alex1");
+		driver.findElement(By.id("id_submit_button")).click();
+		
+		String invalid_fname_actual = driver.findElement(By.id("ErrorLine")).getText();
+		
+		if (invalid_fname_expected.equals(invalid_fname_actual)){
+			System.out.println("Test Case ID: \t\t" + test_case_id_21
+					+ " - PASSED");
+			System.out.println("Error Expected/Actual: \t"
+					+ invalid_fname_expected + "/" + invalid_fname_actual);
+			System.out.println("==============================================================================================");
+		} else {
+			System.out.println("Test Case ID: \t\t" + test_case_id_21
+					+ " - FAILED");
+			System.out.println("Error Expected/Actual: \t"
+					+ invalid_fname_expected + "/" + invalid_fname_actual);
+			System.out.println("==============================================================================================");
+		}
+		
+		// TC-001.22 Invalid Last name verification
+		
+		driver.findElement(By.id("id_fname")).clear();
+		driver.findElement(By.id("id_fname")).sendKeys(fname);
+		
+		driver.findElement(By.id("id_lname")).clear();
+		driver.findElement(By.id("id_lname")).sendKeys("Moore1");
+		
+		driver.findElement(By.id("id_submit_button")).click();
+		
+		String invalid_lname_actual = driver.findElement(By.id("ErrorLine")).getText();
+		
+		if(invalid_lname_expected.equals(invalid_lname_actual)){
+			System.out.println("Test Case ID: \t\t" + test_case_id_22
+					+ " - PASSED");
+			System.out.println("Error Expected/Actual: \t"
+					+ invalid_lname_expected + "/" + invalid_lname_actual);
+			System.out.println("==============================================================================================");
+		} else {
+			System.out.println("Test Case ID: \t\t" + test_case_id_22
+					+ " - FAILED");
+			System.out.println("Error Expected/Actual: \t"
+					+ invalid_lname_expected + "/" + invalid_lname_actual);
+			System.out.println("==============================================================================================");
+		}
+		
+		// TC-001.23 Invalid Email verification
+		
+		driver.findElement(By.id("id_fname")).clear();
+		driver.findElement(By.id("id_fname")).sendKeys(fname);
+		
+		driver.findElement(By.id("id_lname")).clear();
+		driver.findElement(By.id("id_lname")).sendKeys(lname);
+		
+		driver.findElement(By.id("id_email")).clear();
+		driver.findElement(By.id("id_email")).sendKeys("a@gmail.com");
+		
+		driver.findElement(By.id("id_submit_button")).click();
+		
+		String invalid_email_actual = driver.findElement(By.id("ErrorLine")).getText();
+		
+		if(invalid_email_expected.equals(invalid_email_actual)){
+			System.out.println("Test Case ID: \t\t" + test_case_id_23
+					+ " - PASSED");
+			System.out.println("Error Expected/Actual: \t"
+					+ invalid_email_expected + "/" + invalid_email_actual);
+			System.out.println("==============================================================================================");
+		} else {
+			System.out.println("Test Case ID: \t\t" + test_case_id_23
+					+ " - FAILED");
+			System.out.println("Error Expected/Actual: \t"
+					+ invalid_email_expected + "/" + invalid_email_actual);
+			System.out.println("==============================================================================================");
+		}
+		
+		// TC-001.24 Invalid Phone number verification
+		
+		driver.findElement(By.id("id_fname")).clear();
+		driver.findElement(By.id("id_fname")).sendKeys(fname);
+		
+		driver.findElement(By.id("id_lname")).clear();
+		driver.findElement(By.id("id_lname")).sendKeys(lname);
+		
+		driver.findElement(By.id("id_email")).clear();
+		driver.findElement(By.id("id_email")).sendKeys(email);
+		
+		driver.findElement(By.id("id_phone")).clear();
+		driver.findElement(By.id("id_phone")).sendKeys("1111111111A");
+		
+		driver.findElement(By.id("id_submit_button")).click();
+		
+		String invalid_phone_actual = driver.findElement(By.id("ErrorLine")).getText();
+		
+		if(invalid_phone_expected.equals(invalid_phone_actual)){
+			System.out.println("Test Case ID: \t\t" + test_case_id_24
+					+ " - PASSED");
+			System.out.println("Error Expected/Actual: \t"
+					+ invalid_phone_expected + "/" + invalid_phone_actual);
+			System.out.println("==============================================================================================");
+		} else {
+			System.out.println("Test Case ID: \t\t" + test_case_id_24
+					+ " - FAILED");
+			System.out.println("Error Expected/Actual: \t"
+					+ invalid_phone_expected + "/" + invalid_phone_actual);
+			System.out.println("==============================================================================================");
+		}
+		
+		// TC-001.25 First name validation using regex
+		
+		driver.findElement(By.id("id_fname")).clear();
+		driver.findElement(By.id("id_fname")).sendKeys("Dilrabo");
+		
+		String fname_actual = driver.findElement(By.id("id_fname")).getAttribute("value");
+		
+		//Pattern pattern = Pattern.compile("^[a-zA-Z,.'-]{3,30}$");
+		//Matcher matcher = pattern.matcher(fname_actual);
+		
+		if(fname_actual.matches("^[a-zA-Z,.'-]{3,30}$")){
+			System.out.println("Test Case ID: \t\t" + test_case_id_25
+					+ " - PASSED");
+			System.out.println("First Name is correct: "
+					+ fname_actual);
+			System.out.println("==============================================================================================");
+		} else {
+			System.out.println("Test Case ID: \t\t" + test_case_id_25
+					+ " - FAILED");
+			System.out.println("First Name is incorrect:"
+					+ fname_actual);
+			System.out.println("==============================================================================================");
+		}	
+		
+		// TC-001.26 Last name validation using regex
+		
+				driver.findElement(By.id("id_lname")).clear();
+				driver.findElement(By.id("id_lname")).sendKeys("Abdullaeva-Bobokalonova");
+				
+				String lname_actual = driver.findElement(By.id("id_lname")).getAttribute("value");
+				
+				//Pattern pattern = Pattern.compile("^[a-zA-Z,.'-]{3,30}$");
+				//Matcher matcher = pattern.matcher(lname_actual);
+				
+				if(fname_actual.matches("^[a-zA-Z,.'-]{3,30}$")){
+					System.out.println("Test Case ID: \t\t" + test_case_id_26
+							+ " - PASSED");
+					System.out.println("First Name is correct:  "
+							+ lname_actual);
+					System.out.println("==============================================================================================");
+				} else {
+					System.out.println("Test Case ID: \t\t" + test_case_id_26
+							+ " - FAILED");
+					System.out.println("First Name is incorrect:"
+							+ lname_actual);
+					System.out.println("==============================================================================================");
+				}	
+				
+				
 driver.quit();
 	}
 }
