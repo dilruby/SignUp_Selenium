@@ -689,7 +689,7 @@ public class SignUp_App {
 				//Pattern pattern = Pattern.compile("^[a-zA-Z,.'-]{3,30}$");
 				//Matcher matcher = pattern.matcher(lname_actual);
 				
-				if(fname_actual.matches("^[a-zA-Z,.'-]{3,30}$")){
+				if(lname_actual.matches("^[a-zA-Z,.'-]{3,30}$")){
 					System.out.println("Test Case ID: \t\t" + test_case_id_26
 							+ " - PASSED");
 					System.out.println("First Name is correct:  "
