@@ -12,13 +12,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 import org.openqa.selenium.support.ui.Select;
 
 public class SignUp_App {
 
 	public static void main(String[] args) {
 
-		// WebDriver driver = new HtmlUnitDriver();
+		//WebDriver driver = new HtmlUnitDriver();
+		//((HtmlUnitDriver) driver).setJavascriptEnabled(true);
+		
 		WebDriver driver = new FirefoxDriver();
 		String test_case_id_01 = "TC-001.01";
 		String test_case_id_02 = "TC-001.02";
@@ -46,8 +49,12 @@ public class SignUp_App {
 		String test_case_id_24 = "TC-001.24";
 		String test_case_id_25 = "TC-001.25";
 		String test_case_id_26 = "TC-001.26";
+		String test_case_id_27 = "TC-001.27";
+		String test_case_id_28 = "TC-001.28";
+		String test_case_id_29 = "TC-001.29";
 		
 		String url = "http://learn2test.net/qa/apps/sign_up/v1/";
+		String url0 = "http://learn2test.net/qa/apps/sign_up/v0/";
 
 		String title_sign_up_expected = "Welcome to Sign Up v1";
 		String apptitle_sign_up_expected = "Sign Up";
@@ -77,6 +84,7 @@ public class SignUp_App {
 		String gender = "Male";
 		String state = "California";
 		String terms = "Agreed";
+		String city = "Santa Clara, CA";
 
 		// TC-001.01 Page title validation
 
@@ -189,7 +197,7 @@ public class SignUp_App {
 
 		driver.findElement(By.id("id_quotes")).getText();
 		String quote = driver.findElement(By.id("id_quotes")).getText();
-		if (quote != null && quote.length() < 103 && quote.length() > 36) {
+		if (quote != null && quote.length() < 103 && quote.length() > 67) {
 			System.out.println("Test Case ID: \t\t" + test_case_id_07 + " - PASSED");
 			System.out.println("Quote length: \t\t" + quote.length());
 			System.out.println("===============================================================================");
@@ -436,8 +444,11 @@ public class SignUp_App {
 		driver.findElement(By.id("id_g_radio_01")).click();
 		
 		// driver.findElement(By.id("id_state")).sendKeys(Keys.DOWN);
-		Select sele = new Select(driver.findElement(By.id("id_state")));
-		sele.selectByIndex(5);
+		//Select select = new Select(driver.findElement(By.id("id_state")));
+		//select.selectByIndex(5);
+		
+		Select select = new Select(driver.findElement(By.id("id_state")));
+		select.selectByVisibleText("California");
 		
 		driver.findElement(By.id("id_checkbox")).click();
 		driver.findElement(By.id("id_submit_button")).click();
@@ -700,8 +711,43 @@ public class SignUp_App {
 							+ " - FAILED");
 					System.out.println("First Name is incorrect:"
 							+ lname_actual);
-					System.out.println("==============================================================================================");
+				System.out.println("==============================================================================================");
 				}	
+				
+			// TC-001.27 City of current location validation
+				
+				driver.get(url0);
+				driver.findElement(By.id("id_current_location")).isDisplayed();
+				String city_actual = driver.findElement(By.id("id_current_location")).getText();
+				if(city.equals(city_actual)){
+					System.out.println("Test Case ID: \t\t" + test_case_id_27
+							+ " - PASSED");
+					System.out.println("Current city: \t\t"
+							+ city_actual);
+					System.out.println("==============================================================================================");
+				} else {
+					System.out.println("Test Case ID: \t\t" + test_case_id_27
+							+ " - FAILED");
+					System.out.println("Current city: \t\t"
+							+ city_actual);
+					System.out.println("==============================================================================================");
+				}
+				
+			// TC-001.28  Weather icon presence validation
+				
+				if(driver.findElement(By.xpath("//td[1]/img")).isDisplayed()){
+					System.out.println("Test Case ID: \t\t" + test_case_id_28
+							+ " - PASSED");
+					System.out.println("Weather icon exists");
+					System.out.println("==============================================================================================");
+				} else {
+					System.out.println("Test Case ID: \t\t" + test_case_id_28
+							+ " - FAILED");			
+					System.out.println("Weather icon doesn't exist");
+					System.out.println("==============================================================================================");
+				
+				};
+				
 				
 				
 driver.quit();
