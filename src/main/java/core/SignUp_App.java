@@ -1,23 +1,31 @@
 package core;
 
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+
 import org.openqa.selenium.support.ui.Select;
+import org.w3c.dom.Document;
+
+
 
 public class SignUp_App {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParserConfigurationException, Exception {
 
 		//WebDriver driver = new HtmlUnitDriver();
 		//((HtmlUnitDriver) driver).setJavascriptEnabled(true);
@@ -55,6 +63,8 @@ public class SignUp_App {
 		
 		String url = "http://learn2test.net/qa/apps/sign_up/v1/";
 		String url0 = "http://learn2test.net/qa/apps/sign_up/v0/";
+		String url_pars = "http://api.wunderground.com/api/8a75c2aa5ba78758/conditions/q/37.350101,-121.985397.xml";		
+		//String url_pub_ip = "http://www.whatismypublicip.com/";
 
 		String title_sign_up_expected = "Welcome to Sign Up v1";
 		String apptitle_sign_up_expected = "Sign Up";
@@ -84,7 +94,10 @@ public class SignUp_App {
 		String gender = "Male";
 		String state = "California";
 		String terms = "Agreed";
-		String city = "Santa Clara, CA";
+		String xpath_loc = "//display_location/full";
+		
+		
+		
 
 		// TC-001.01 Page title validation
 
@@ -714,42 +727,75 @@ public class SignUp_App {
 				System.out.println("==============================================================================================");
 				}	
 				
-			// TC-001.27 City of current location validation
+			// TC-001.27 Current location validation
 				
+				
+				//driver.get(url_pub_ip);
+				//String pub_ip = driver.findElement(By.id("up_finished")).getText();
+								
+				
+				DocumentBuilderFactory f = DocumentBuilderFactory.newInstance();
+				DocumentBuilder b = f.newDocumentBuilder();
+				Document doc = b.parse(url_pars);
+				
+				XPath xpath = XPathFactory.newInstance().newXPath();
+				String current_loc_actual = xpath.compile(xpath_loc).evaluate(doc);
+                
 				driver.get(url0);
+				
 				driver.findElement(By.id("id_current_location")).isDisplayed();
-				String city_actual = driver.findElement(By.id("id_current_location")).getText();
-				if(city.equals(city_actual)){
+				String current_loc_expected = driver.findElement(By.id("id_current_location")).getText();
+				
+				if(current_loc_expected.equals(current_loc_actual)){
 					System.out.println("Test Case ID: \t\t" + test_case_id_27
 							+ " - PASSED");
-					System.out.println("Current city: \t\t"
-							+ city_actual);
+					System.out.println("Location Expected/Actual:"
+							+ current_loc_expected + "/" + current_loc_actual);
 					System.out.println("==============================================================================================");
 				} else {
 					System.out.println("Test Case ID: \t\t" + test_case_id_27
 							+ " - FAILED");
-					System.out.println("Current city: \t\t"
-							+ city_actual);
-					System.out.println("==============================================================================================");
+					System.out.println("Location Expected/Actual:"
+							+ current_loc_expected + "/" + current_loc_actual);
+					System.out.println("==============================================================================================");	
 				}
-				
+			
 			// TC-001.28  Weather icon presence validation
-				
-				if(driver.findElement(By.xpath("//td[1]/img")).isDisplayed()){
+												
+				String weather_actual = xpath.compile("//icon_url").evaluate(doc);				
+				String weather_expected = driver.findElement(By.xpath("//td[1]/img")).getTagName();
+				if(weather_expected.equals(weather_actual)){
 					System.out.println("Test Case ID: \t\t" + test_case_id_28
 							+ " - PASSED");
-					System.out.println("Weather icon exists");
+					System.out.println("Weather Expected/Actual:"
+							+ weather_expected + "/" + weather_actual);
 					System.out.println("==============================================================================================");
 				} else {
 					System.out.println("Test Case ID: \t\t" + test_case_id_28
 							+ " - FAILED");			
-					System.out.println("Weather icon doesn't exist");
+					System.out.println("Weather Expected/Actual:"
+							+ weather_expected + "/" + weather_actual);
 					System.out.println("==============================================================================================");
 				
 				};
 				
+			// TC-001.29 Temperature validation
 				
-				
+				String temp_actual = xpath.compile("//temp_f").evaluate(doc) + " ℉";				
+				String temp_expected = driver.findElement(By.id("id_temperature")).getText();
+				if(temp_expected.equals(temp_actual)){
+					System.out.println("Test Case ID: \t\t" + test_case_id_29
+							+ " - PASSED");
+					System.out.println("Weather Expected/Actual:"
+							+ temp_expected + "/" + temp_actual);
+					System.out.println("==============================================================================================");
+				} else {
+					System.out.println("Test Case ID: \t\t" + test_case_id_29
+							+ " - FAILED");			
+					System.out.println("Weather Expected/Actual:"
+							+ temp_expected + "/" + temp_actual);
+					System.out.println("==============================================================================================");
+				}	
 driver.quit();
 	}
 }
