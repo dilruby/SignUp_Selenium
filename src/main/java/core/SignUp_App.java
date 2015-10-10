@@ -16,8 +16,8 @@ import javax.xml.xpath.XPathFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
-
 import org.openqa.selenium.support.ui.Select;
 import org.w3c.dom.Document;
 
@@ -31,6 +31,7 @@ public class SignUp_App {
 		//((HtmlUnitDriver) driver).setJavascriptEnabled(true);
 		
 		WebDriver driver = new FirefoxDriver();
+		
 		String test_case_id_01 = "TC-001.01";
 		String test_case_id_02 = "TC-001.02";
 		String test_case_id_03 = "TC-001.03";
@@ -346,10 +347,19 @@ public class SignUp_App {
 		
 		// TC-001.14 My OS & Browser validation
 		
-		driver.findElement(By.id("os_browser")).getText();
-		String os_browser_actual = driver.findElement(By.id("os_browser"))
-				.getText();
-
+		//final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:41.0) Gecko/20100101 Firefox/41.0";
+		
+//		FirefoxProfile profile = new FirefoxProfile();
+//		profile.setPreference("general.useragent.override", USER_AGENT);
+//		WebDriver driver_profile = new FirefoxDriver(profile);
+//		
+//		driver_profile.get(url);
+//		
+//		String os_br_expected = driver.findElement(By.id("os_browser")).getText();
+//		String os_browser_actual = driver.findElement(By.id("os_browser"))
+//				.getText();
+		
+		String os_browser_actual = driver.findElement(By.id("os_browser")).getText();
 		if (os_browser_expected.equals(os_browser_actual)) {
 			System.out.println("Test Case ID: \t\t\t" + test_case_id_14
 					+ " - PASSED");
@@ -760,21 +770,23 @@ public class SignUp_App {
 					System.out.println("==============================================================================================");	
 				}
 			
-			// TC-001.28  Weather icon presence validation
+			// TC-001.28  Weather icon validation
 												
-				String weather_actual = xpath.compile("//icon_url").evaluate(doc);				
-				String weather_expected = driver.findElement(By.xpath("//td[1]/img")).getTagName();
-				if(weather_expected.equals(weather_actual)){
+				WebElement image = driver.findElement(By.xpath("//td[1]/img"));
+				String src = image.getAttribute("src");
+				//System.out.println(src);
+				String weather_actual = xpath.compile("//icon").evaluate(doc);
+				
+				if(src.contains(weather_actual)){
 					System.out.println("Test Case ID: \t\t" + test_case_id_28
 							+ " - PASSED");
-					System.out.println("Weather Expected/Actual:"
-							+ weather_expected + "/" + weather_actual);
+					System.out.println("The weather is "
+							+ weather_actual + " today");
 					System.out.println("==============================================================================================");
 				} else {
 					System.out.println("Test Case ID: \t\t" + test_case_id_28
 							+ " - FAILED");			
-					System.out.println("Weather Expected/Actual:"
-							+ weather_expected + "/" + weather_actual);
+					System.out.println("Incorrect weather icon, today is: " + weather_actual);
 					System.out.println("==============================================================================================");
 				
 				};
